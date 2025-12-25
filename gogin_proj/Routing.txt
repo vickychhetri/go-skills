@@ -1,0 +1,10 @@
+2.2 Routing
+
+r.GET("/users/:id", handler)
+r.POST("/users", handler)
+id := c.Param("id")
+
+Also know
+Query params: c.Query("name")
+Headers: c.GetHeader("Authorization")
+

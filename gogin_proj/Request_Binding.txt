@@ -1,0 +1,111 @@
+Request Binding
+
+type LoginRequest struct {
+    Email    string `json:"email" binding:"required"`
+    Password string `json:"password"`
+}
+
+var req LoginRequest
+if err := c.ShouldBindJSON(&req); err != nil {
+    c.JSON(400, gin.H{"error": err.Error()})
+}
+
+
+
+🧠 What is Request Binding?
+
+Request binding means:
+Mapping incoming request data (JSON, form, query, etc.) into a Go struct.
+
+In this case:
+Gin reads the JSON body
+Converts it into the LoginRequest struct
+Runs validation rules defined in struct tags
+
+
+🔄 Step-by-Step: What Happens Internally
+1️⃣ Client sends a JSON request
+{
+  "email": "user@example.com",
+  "password": "secret"
+}
+
+2️⃣ ShouldBindJSON(&req) is called
+
+Gin does three things:
+✅ a) Parse JSON body
+Reads the request body
+Decodes JSON into Go fields using json tags
+
+"email"    → req.Email
+"password" → req.Password
+
+
+✅ b) Populate the struct
+req.Email    = "user@example.com"
+req.Password = "secret"
+
+✅ c) Validate struct fields
+
+Gin uses go-playground/validator under the hood.
+
+This tag:
+binding:"required"
+
+means:
+Field must be present
+Field must not be empty
+If email is missing or empty → validation fails.
+3️⃣ Error handling
+If parsing OR validation fails:
+err != nil
+Example error:
+Key: 'LoginRequest.Email' Error:Field validation for 'Email' failed on the 'required' tag
+
+
+You return:
+HTTP 400 Bad Request
+
+
+
+
+⚖️ ShouldBindJSON vs BindJSON (IMPORTANT)
+Feature	                    BindJSON        	ShouldBindJSON
+
+Auto response on error	    ❌ No	            ✅ Yes
+Sets HTTP 400 automatically	❌ No	            ✅ Yes
+Control over error handling	✅ Yes	            ❌ Less
+Recommended for APIs	    ❌	                ✅
+
+
+nterview-Ready Summary
+ShouldBindJSON reads the JSON request body, binds it to a struct, and validates it using struct tags. 
+Validation is powered by go-playground/validator. Unlike BindJSON, ShouldBindJSON does not automatically 
+write a response, giving better control over error handling.
+
+One-liner Answer
+ShouldBindJSON = JSON parsing + struct binding + validation, with manual error handling control.
+
+
+Example
+type LoginRequest struct {
+    Email    string `json:"email" form:"email" binding:"required,email"`
+    Password string `json:"password" form:"password" binding:"required,min=6"`
+}
+
+func Login(c *gin.Context) {
+    var req LoginRequest
+
+    // ShouldBind automatically chooses the binder
+    if err := c.ShouldBind(&req); err != nil {
+        c.JSON(400, gin.H{
+            "error": err.Error(),
+        })
+        return
+    }
+
+    c.JSON(200, gin.H{
+        "message": "Login successful",
+        "email":   req.Email,
+    })
+}
