@@ -33,6 +33,11 @@ type Claims struct {
 	jwt.RegisteredClaims
 }
 
+type Claim2 struct {
+	Username string `json:"username"`
+	jwt.RegisteredClaims
+}
+
 // ===== IN-MEMORY STORE =====
 
 var users = map[string]string{}
@@ -120,6 +125,18 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	tokenStr, _ := token.SignedString(jwtKey)
+
+	// exp2 := time.Now().Add(time.Hour)
+	// claims2 := &Claim2{
+	// 	Username: u.Username,
+	// 	RegisteredClaims: jwt.RegisteredClaims{
+	// 		ExpiresAt: jwt.NewNumericDate(exp2),
+	// 	},
+	// }
+
+	// toen := jwt.NewWithClaims(jwt.SigningMethodHS256, claims2)
+	// tostr, _ := toen.SignedString(jwtKey)
+	// json.NewEncoder(w).Encode(map[string]string{"token": tostr})
 
 	json.NewEncoder(w).Encode(map[string]string{"token": tokenStr})
 }
