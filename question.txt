@@ -1,0 +1,143 @@
+
+Asked in Invocriat Technologies
+5d ago
+
+Q. What is the difference between channels and goroutines in Go programming?
+Ans. Channels are used for communication between goroutines, while goroutines are lightweight threads for concurrent execution.
+Goroutines are functions that run concurrently, initiated with the 'go' keyword. Example: 'go myFunction()'.
+
+Channels are used to send and receive messages between goroutines, ensuring safe communication. Example: 'ch := make(chan int)'.
+
+Goroutines are managed by the Go runtime, allowing thousands of them to run simultaneously without heavy overhead.
+
+Channels can be buffered or unbuffered, affecting how goroutines synchronize. Buffered channels allow a set number of messages to be sent without blocking.
+
+Goroutines can be thought of as the workers, while channels are the pathways for communication between these workers.
+
+
+
+Asked in Hitachi Digital Services
+5d ago
+
+Q. If the input is 3, the output should be 14. If the input is 4, the output should be 30. Explain the logic.
+Ans.
+The outputs are the sum of the squares of the first n natural numbers. 
+
+For n = 3: 1^2 + 2^2 + 3^2 = 1 + 4 + 9 = 14; for n = 4: 1^2 + 2^2 + 3^2 + 4^2 = 1 + 4 + 9 + 16 = 30.
+
+The closed form is: 1^2 + 2^2 + … + n^2 = n(n + 1)(2n + 1) / 6. So given input n, compute n*(n+1)*(2n+1)/6 to get the output.
+
+
+
+
+Asked in LiquidHub
+2d ago
+Q. How would you process a large amount of data efficiently?
+Ans. 
+Approach: Break the problem into data ingestion, storage, processing and serving — design each for scalability and fault-tolerance.
+Ingestion & Streaming: Use Kafka/Kinesis for high-throughput ingestion and backpressure; prefer streaming processing (Flink/Spark Structured Streaming) 
+when low latency is needed.
+
+Storage & Format: Store in columnar, compressed formats like Parquet/ORC, partition by relevant keys and use compaction to reduce small-file overhead.
+
+Processing: Use distributed engines (Spark, Dask, Presto) with partitioning, data locality, and vectorized operations;
+ push computation to the storage layer where possible (e.g., Hive/BigQuery).
+
+
+Optimization Techniques: Apply predicate pushdown, column pruning, indexing, caching hot partitions, and batch small writes to reduce I/O and shuffle.
+
+Resource Management: Right-size clusters, autoscale, tune parallelism and memory, and use checkpointing for long jobs to recover cheaply.
+
+Monitoring & Validation: Implement metrics, alerts, and data-quality checks; run sample-based or incremental runs before full production 
+jobs to validate performance and correctness.
+
+
+
+
+
+Asked in Brevo
+5d ago
+
+Q. What is the process of implementing sharding in a database?
+Ans. Sharding is a database architecture pattern that splits data across multiple servers to improve performance and scalability.
+
+
+Identify the sharding key: Choose a key that will determine how data is distributed (e.g., user ID, geographic location).
+
+Design the shard architecture: Decide on the number of shards and how they will be managed (e.g., horizontal vs. vertical sharding).
+
+Implement data distribution: Write logic to route queries to the appropriate shard based on the sharding key.
+
+Handle data migration: Plan for how to move data between shards as they grow or shrink in size.
+
+Ensure fault tolerance: Implement replication and backup strategies to protect against data loss in individual shards.
+
+
+
+
+
+
+Asked in Ascendion
+3d ago
+
+Q. How have you handled multi-threading?
+Ans. 
+Background: I have [X years, e.g., 4 years] of experience implementing multi-threading in production systems such as [project name,
+ e.g., Payment Platform], using Java
+ (Threads, Executors, CompletableFuture), and occasionally C++/Python for low-level or scripting tasks.
+
+Approach: Prefer higher-level concurrency utilities — thread pools (Executors), ConcurrentHashMap, BlockingQueue,
+ and CompletableFuture for async flows to avoid manually managing Thread lifecycle.
+
+Synchronization strategy: Use immutable objects, fine-grained locks, and lock ordering to prevent deadlocks;
+ adopt volatile for visibility and Atomic classes (AtomicInteger/Reference) or StampedLock/ReadWriteLock for performance-sensitive reads.
+
+Scalability & safety: Convert blocking tasks to non-blocking where possible, apply work-stealing pools, 
+rate-limit with semaphores, and use bounded queues to prevent resource exhaustion.
+
+Debugging & testing: Rely on thread dumps, profilers (async-profiler/JVisualVM), unit tests with 
+concurrency frameworks, and stress tests to reproduce race conditions; instrument logs to capture thread IDs and timing.
+
+Trade-offs & results: I balance simplicity vs performance — default to thread-safe libraries first, 
+optimize hotspots with lock-free techniques only when profiling shows contention, resulting in reduced latency and improved throughput in delivered modules.
+
+
+
+
+Asked in EPAM Systems
+1d ago
+
+Q. From memory, what does each letter in SOLID stand for?
+Ans. 
+S — Single Responsibility Principle: A class should have one reason to change, meaning it should have only one responsibility or job.
+O — Open/Closed Principle: Software entities should be open for extension but closed for modification, allowing new behavior via extension 
+(e.g., inheritance or composition) without changing existing code.
+L — Liskov Substitution Principle: Subtypes must be substitutable for their base types — derived classes should honor the base 
+class contract so clients work with either without unexpected behavior.
+I — Interface Segregation Principle: Prefer many specific interfaces over a large general one so clients only depend on methods 
+they actually use.
+D — Dependency Inversion Principle: High-level modules should not depend on low-level modules; both should depend on abstractions,
+ and abstractions should not depend on details — details depend on abstractions.
+
+
+
+
+
+Asked in Brevo
+2d ago
+
+Q. What is the process to reverse a linked list?
+Ans. Reversing a linked list involves changing the direction of the pointers between nodes.
+1. Initialize three pointers: prev (null), current (head), and next (null).
+
+2. Iterate through the list: while current is not null, do the following:
+
+a. Set next to current.next to save the next node.
+
+b. Change current.next to prev to reverse the link.
+
+c. Move prev to current and current to next.
+
+3. Once done, set head to prev, which is the new head of the reversed list.
+
+Example: For a list 1 -> 2 -> 3, after reversal it becomes 3 -> 2 -> 1.
